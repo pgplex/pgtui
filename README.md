@@ -1,3 +1,6 @@
+> [!NOTE]
+> pgplex: Modern Developer Stack for Postgres - [pgconsole](https://github.com/pgplex/pgconsole) · **pgtui** · [pgschema](https://github.com/pgplex/pgschema) · [pgparser](https://github.com/pgplex/pgparser)
+
 # lazypg
 
 <p align="center">
