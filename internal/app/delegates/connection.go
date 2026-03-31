@@ -71,8 +71,8 @@ func (d *ConnectionDelegate) handleConnectionResult(msg messages.ConnectionResul
 	if msg.Err != nil {
 		// Connection failed - clear pending password (don't save wrong password)
 		app.ClearPendingPasswordSave()
-		app.ShowError("Connection Failed", fmt.Sprintf("Could not connect to %s:%d\n\nError: %v",
-			msg.Config.Host, msg.Config.Port, msg.Err))
+		app.ShowError("Connection Failed", fmt.Sprintf("Could not connect to %s\n\nError: %v",
+			msg.Config.DisplayTarget(), msg.Err))
 		return true, nil
 	}
 
