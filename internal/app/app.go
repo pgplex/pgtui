@@ -3160,17 +3160,7 @@ func (a *App) connectToHistoryEntry(entry models.ConnectionHistoryEntry) (tea.Mo
 
 // connectToDiscoveredInstance connects using a discovered instance
 func (a *App) connectToDiscoveredInstance(instance models.DiscoveredInstance) (tea.Model, tea.Cmd) {
-	// Create connection config from discovered instance
-	config := models.ConnectionConfig{
-		Host:     instance.Host,
-		Port:     instance.Port,
-		Database: "postgres",        // Default database
-		User:     os.Getenv("USER"), // Current user
-		Password: "",                // No password for now
-		SSLMode:  "prefer",
-	}
-
-	return a.performConnection(config)
+	return a.performConnection(discovery.BuildConnectionConfig(instance))
 }
 
 // performConnection starts an async connection attempt
@@ -3362,15 +3352,7 @@ func (a *App) handleConnectionDialog(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 					return a, nil
 				}
 
-				// Create connection config from discovered instance
-				config = models.ConnectionConfig{
-					Host:     instance.Host,
-					Port:     instance.Port,
-					Database: "postgres",
-					User:     os.Getenv("USER"),
-					Password: "",
-					SSLMode:  "prefer",
-				}
+				config = discovery.BuildConnectionConfig(*instance)
 			}
 
 			return a.performConnection(config)
