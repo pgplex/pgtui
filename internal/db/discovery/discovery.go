@@ -29,11 +29,15 @@ func (d *Discoverer) DiscoverAll(ctx context.Context) []models.DiscoveredInstanc
 		instances = append(instances, *envInstance)
 	}
 
-	// 2. Scan localhost ports
+	// 2. Scan common Unix socket directories
+	unixSocketInstances := d.scanner.ScanUnixSockets(ctx)
+	instances = append(instances, unixSocketInstances...)
+
+	// 3. Scan localhost ports
 	localInstances := d.scanner.ScanLocalhost(ctx)
 	instances = append(instances, localInstances...)
 
-	// 3. Parse .pgpass
+	// 4. Parse .pgpass
 	pgpassInstances := GetDiscoveredInstances()
 	instances = append(instances, pgpassInstances...)
 
@@ -42,7 +46,15 @@ func (d *Discoverer) DiscoverAll(ctx context.Context) []models.DiscoveredInstanc
 
 	// Sort by source priority
 	sort.Slice(instances, func(i, j int) bool {
-		return instances[i].Source < instances[j].Source
+		if instances[i].Source != instances[j].Source {
+			return instances[i].Source < instances[j].Source
+		}
+
+		if instances[i].Host != instances[j].Host {
+			return instances[i].Host < instances[j].Host
+		}
+
+		return instances[i].Port < instances[j].Port
 	})
 
 	return instances

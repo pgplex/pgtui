@@ -29,9 +29,9 @@ type ConnectionDialog struct {
 	searchInput textinput.Model
 
 	// Text input fields for manual mode
-	inputs      []textinput.Model
-	focusIndex  int
-	cursorMode  cursor.Mode
+	inputs     []textinput.Model
+	focusIndex int
+	cursorMode cursor.Mode
 }
 
 const (
@@ -308,9 +308,8 @@ func (c *ConnectionDialog) renderDiscoveryMode(contentWidth int) string {
 
 			sourceStyle := lipgloss.NewStyle().
 				Foreground(lipgloss.Color("#6c7086"))
-			line := fmt.Sprintf("%s:%d  %s",
-				instance.Host,
-				instance.Port,
+			line := fmt.Sprintf("%s  %s",
+				instance.DisplayTarget(),
 				sourceStyle.Render(fmt.Sprintf("(%s)", instance.Source.String())),
 			)
 			// Wrap with zone for click detection
