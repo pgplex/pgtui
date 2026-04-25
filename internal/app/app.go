@@ -102,9 +102,9 @@ type App struct {
 	currentTab        int // 0=Data, 1=Columns, 2=Constraints, 3=Indexes
 
 	// Code editor for viewing/editing database object definitions
-	codeEditor              *components.CodeEditor
-	showCodeEditor          bool
-	isLoadingObjectDetails  bool // Loading indicator for function/sequence/etc details
+	codeEditor             *components.CodeEditor
+	showCodeEditor         bool
+	isLoadingObjectDetails bool // Loading indicator for function/sequence/etc details
 
 	// Favorites
 	showFavorites    bool
@@ -875,8 +875,8 @@ func (a *App) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				"j": true, "k": true, "up": true, "down": true, // Scrolling
 				"g": true, "G": true, // Scroll to top/bottom
 				"ctrl+d": true, "ctrl+u": true, // Page scroll
-				"y": true,   // Copy
-				"e": true,   // Enter edit mode
+				"y":   true, // Copy
+				"e":   true, // Enter edit mode
 				"esc": true, // Close (q is reserved for quitting app)
 			}
 			key := msg.String()
@@ -2118,7 +2118,7 @@ func (a *App) renderNormalView() string {
 	// Width must account for border: lipgloss Width() sets content area,
 	// border chars are added outside, so subtract border width (2) to avoid overflow
 	topBar := lipgloss.NewStyle().
-		Width(a.state.Width - 2).
+		Width(a.state.Width-2).
 		Background(lipgloss.Color("#313244")).
 		Foreground(lipgloss.Color("#cdd6f4")).
 		Border(lipgloss.RoundedBorder()).
@@ -2214,7 +2214,7 @@ func (a *App) renderNormalView() string {
 	// Create modern bottom bar
 	// Width must account for border: subtract border width (2) to avoid overflow
 	bottomBar := lipgloss.NewStyle().
-		Width(a.state.Width - 2).
+		Width(a.state.Width-2).
 		Background(lipgloss.Color("#313244")).
 		Foreground(lipgloss.Color("#cdd6f4")).
 		Border(lipgloss.RoundedBorder()).
@@ -3271,13 +3271,13 @@ func (a *App) handleConnectionDialog(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		}
 		return a, nil
 
-	case "up", "k":
+	case "up":
 		if !a.connectionDialog.ManualMode {
 			a.connectionDialog.MoveSelection(-1)
 		}
 		return a, nil
 
-	case "down", "j":
+	case "down":
 		if !a.connectionDialog.ManualMode {
 			a.connectionDialog.MoveSelection(1)
 		}
@@ -4501,9 +4501,9 @@ func (a *App) overlayLine(background, foreground string, startX int) string {
 
 // SearchTableResultMsg is sent when table search completes
 type SearchTableResultMsg struct {
-	Query   string
-	Data    *metadata.TableData
-	Err     error
+	Query string
+	Data  *metadata.TableData
+	Err   error
 }
 
 // searchTable executes a table-wide search
