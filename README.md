@@ -1,5 +1,8 @@
 > [!NOTE]
 > pgplex: Modern Developer Stack for Postgres - [pgconsole](https://github.com/pgplex/pgconsole) · **pgtui** · [pgschema](https://github.com/pgplex/pgschema) · [pgparser](https://github.com/pgplex/pgparser)
+> 
+> Brought to you by [Bytebase](https://www.bytebase.com/), open-source database DevSecOps platform.
+
 
 # pgtui
 
@@ -252,6 +255,8 @@ pgtui wouldn't exist without these amazing projects:
 - [pgx](https://github.com/jackc/pgx) — PostgreSQL driver for Go
 - [Bubblezone](https://github.com/lrstanley/bubblezone) — Mouse support
 
-## License
+## Sponsor
 
-[MIT](LICENSE) — feel free to use this in your own projects.
+[Bytebase](https://www.bytebase.com?utm_sourcepgtui) - open source, web-based database DevSecOps platform.
+
+<a href="https://www.bytebase.com?utm_sourcepgtui"><img src="https://raw.githubusercontent.com/pgplex/pgschema/main/docs/images/bytebase.webp" /></a>
