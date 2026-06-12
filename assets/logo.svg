@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1536" height="1024" viewBox="0 0 1536 1024">
+  <rect width="1536" height="1024" fill="#FBF3E9"/>
+
+  <g transform="translate(0,40)">
+    <!-- elephant peeking over the terminal -->
+    <g stroke="#1E3D5C" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
+      <ellipse cx="285" cy="310" rx="78" ry="92" fill="#3D7DB0"/>
+      <ellipse cx="545" cy="310" rx="78" ry="92" fill="#3D7DB0"/>
+      <circle cx="415" cy="330" r="118" fill="#4F94C9"/>
+      <path d="M 352 318 C 362 330, 380 330, 390 318" fill="none"/>
+      <path d="M 440 318 C 450 330, 468 330, 478 318" fill="none"/>
+    </g>
+
+    <!-- terminal window -->
+    <g stroke="#1E3D5C" stroke-width="16" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="200" y="412" width="430" height="320" rx="36" fill="#4F94C9"/>
+      <line x1="200" y1="500" x2="630" y2="500"/>
+      <circle cx="262" cy="456" r="14" fill="#FBF3E9" stroke="none"/>
+      <circle cx="316" cy="456" r="14" fill="#FBF3E9" stroke="none"/>
+      <circle cx="370" cy="456" r="14" fill="#FBF3E9" stroke="none"/>
+    </g>
+
+    <!-- trunk hanging over the front -->
+    <g fill="none" stroke-linecap="round">
+      <path d="M 432 418 C 474 426, 484 468, 484 512 L 484 562 C 484 592, 466 602, 448 596"
+            stroke="#1E3D5C" stroke-width="58"/>
+      <path d="M 432 418 C 474 426, 484 468, 484 512 L 484 562 C 484 592, 466 602, 448 596"
+            stroke="#4F94C9" stroke-width="30"/>
+    </g>
+
+    <!-- prompt inside terminal -->
+    <g fill="#FBF3E9">
+      <path d="M 262 590 L 326 634 L 262 678 L 262 646 L 290 634 L 262 622 Z"/>
+      <rect x="348" y="606" width="72" height="56" rx="8"/>
+    </g>
+
+    <!-- wordmark -->
+    <text x="700" y="570" font-family="Arial Rounded MT Bold, Arial, sans-serif" font-size="230" font-weight="bold" fill="#1E3D5C">pgtui</text>
+  </g>
+</svg>
