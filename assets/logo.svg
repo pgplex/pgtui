@@ -1,26 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1536" height="1024" viewBox="0 0 1536 1024">
-  <!-- square icon (concept B: elephant on dark terminal screen), centered at (410,512) -->
   <g transform="translate(410,512) scale(0.895) translate(-256,-256)">
-    <g stroke="#1E3D5C" stroke-width="15" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="46" y="46" width="420" height="420" rx="40" fill="#16314D"/>
-      <path d="M 46 130 L 46 86 C 46 64 64 46 86 46 L 426 46 C 448 46 466 64 466 86 L 466 130 Z" fill="#4F94C9"/>
-      <line x1="46" y1="130" x2="466" y2="130"/>
-      <circle cx="106" cy="88" r="13" fill="#FBF3E9" stroke="none"/>
-      <circle cx="156" cy="88" r="13" fill="#FBF3E9" stroke="none"/>
-      <circle cx="206" cy="88" r="13" fill="#FBF3E9" stroke="none"/>
-      <ellipse cx="152" cy="278" rx="54" ry="66" fill="#3D7DB0"/>
-      <ellipse cx="360" cy="278" rx="54" ry="66" fill="#3D7DB0"/>
-      <circle cx="256" cy="288" r="86" fill="#4F94C9"/>
-      <path d="M 210 280 C 218 289, 231 289, 239 280" fill="none"/>
-      <path d="M 273 280 C 281 289, 294 289, 302 280" fill="none"/>
-    </g>
-    <g fill="none" stroke-linecap="round">
-      <path d="M 270 358 C 292 364, 298 386, 298 408 C 298 428, 282 434, 268 428" stroke="#1E3D5C" stroke-width="36"/>
-      <path d="M 270 358 C 292 364, 298 386, 298 408 C 298 428, 282 434, 268 428" stroke="#4F94C9" stroke-width="15"/>
-    </g>
-    <path d="M 92 384 L 130 416 L 92 448" fill="none" stroke="#FBF3E9" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- window frame -->
+  <g stroke="#1E3D5C" stroke-width="15" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="46" y="46" width="420" height="420" rx="40" fill="#16314D"/>
+    <path d="M 46 130 L 46 86 C 46 64 64 46 86 46 L 426 46 C 448 46 466 64 466 86 L 466 130 Z" fill="#4F94C9"/>
+    <line x1="46" y1="130" x2="466" y2="130"/>
+    <circle cx="106" cy="88" r="13" fill="#FBF3E9" stroke="none"/>
+    <circle cx="156" cy="88" r="13" fill="#FBF3E9" stroke="none"/>
+    <circle cx="206" cy="88" r="13" fill="#FBF3E9" stroke="none"/>
   </g>
-
-  <!-- wordmark -->
+  <!-- flat elephant -->
+  <ellipse cx="152" cy="278" rx="54" ry="66" fill="#3D7DB0"/>
+  <ellipse cx="360" cy="278" rx="54" ry="66" fill="#3D7DB0"/>
+  <circle cx="256" cy="288" r="86" fill="#4F94C9"/>
+  <path d="M 270 350 C 294 358, 300 384, 300 408 C 300 430, 282 436, 266 429"
+        fill="none" stroke="#4F94C9" stroke-width="34" stroke-linecap="round"/>
+  <g fill="none" stroke="#1E3D5C" stroke-width="13" stroke-linecap="round">
+    <path d="M 210 280 C 218 289, 231 289, 239 280"/>
+    <path d="M 273 280 C 281 289, 294 289, 302 280"/>
+  </g>
+  <!-- prompt chevron -->
+  <path d="M 92 384 L 130 416 L 92 448" fill="none" stroke="#FBF3E9" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
   <text x="660" y="590" font-family="Arial Rounded MT Bold, Arial, sans-serif" font-size="240" font-weight="bold" fill="#1E3D5C">pgtui</text>
 </svg>
