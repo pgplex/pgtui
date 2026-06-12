@@ -136,7 +136,7 @@ make build
 
 4. **Search and explore**
    - Press `/` to search and filter rows
-   - Press `j` on a JSONB cell to open the viewer
+   - Press `v` on a JSONB cell to open the viewer
    - Press `Ctrl+K` to open the command palette
 
 5. **Get help**
@@ -170,7 +170,7 @@ make build
 |-----|--------|
 | `/` | Search and filter rows |
 | `Esc` | Clear search |
-| `j` | Open JSONB viewer (on JSONB cell) |
+| `v` | Open JSONB viewer (on JSONB cell) |
 | `p` | Toggle preview pane |
 | `s` | Sort by column |
 | `[` / `]` | Previous/Next tab |

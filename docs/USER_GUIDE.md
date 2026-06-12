@@ -183,7 +183,7 @@ Press `f` to open the interactive filter builder:
 
 ## JSONB Viewer
 
-Press `J` on a JSONB cell to open the interactive viewer.
+Press `v` on a JSONB cell to open the interactive viewer.
 
 ### Features
 
@@ -326,7 +326,7 @@ Export favorites via command palette:
 | `/` | Search |
 | `f` | Filter builder |
 | `s` | Sort column |
-| `J` | JSONB viewer |
+| `v` | JSONB viewer |
 | `1-4` | Structure tabs |
 
 ### Dialogs
