@@ -4,8 +4,8 @@
 package messages
 
 import (
-	"github.com/rebelice/lazypg/internal/db/metadata"
-	"github.com/rebelice/lazypg/internal/models"
+	"github.com/pgplex/pgtui/internal/db/metadata"
+	"github.com/pgplex/pgtui/internal/models"
 )
 
 // DiscoveryCompleteMsg is sent when instance discovery completes

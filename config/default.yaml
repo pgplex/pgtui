@@ -1,4 +1,4 @@
-# lazypg default configuration
+# pgtui default configuration
 
 general:
   auto_connect_last: false

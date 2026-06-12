@@ -17,23 +17,23 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/charmbracelet/x/ansi"
 	zone "github.com/lrstanley/bubblezone"
-	"github.com/rebelice/lazypg/internal/app/delegates"
-	"github.com/rebelice/lazypg/internal/app/messages"
-	"github.com/rebelice/lazypg/internal/commands"
-	"github.com/rebelice/lazypg/internal/config"
-	"github.com/rebelice/lazypg/internal/connection_history"
-	"github.com/rebelice/lazypg/internal/db/connection"
-	"github.com/rebelice/lazypg/internal/db/discovery"
-	"github.com/rebelice/lazypg/internal/db/metadata"
-	"github.com/rebelice/lazypg/internal/db/query"
-	"github.com/rebelice/lazypg/internal/favorites"
-	filterBuilder "github.com/rebelice/lazypg/internal/filter"
-	"github.com/rebelice/lazypg/internal/history"
-	"github.com/rebelice/lazypg/internal/jsonb"
-	"github.com/rebelice/lazypg/internal/models"
-	"github.com/rebelice/lazypg/internal/ui/components"
-	"github.com/rebelice/lazypg/internal/ui/help"
-	"github.com/rebelice/lazypg/internal/ui/theme"
+	"github.com/pgplex/pgtui/internal/app/delegates"
+	"github.com/pgplex/pgtui/internal/app/messages"
+	"github.com/pgplex/pgtui/internal/commands"
+	"github.com/pgplex/pgtui/internal/config"
+	"github.com/pgplex/pgtui/internal/connection_history"
+	"github.com/pgplex/pgtui/internal/db/connection"
+	"github.com/pgplex/pgtui/internal/db/discovery"
+	"github.com/pgplex/pgtui/internal/db/metadata"
+	"github.com/pgplex/pgtui/internal/db/query"
+	"github.com/pgplex/pgtui/internal/favorites"
+	filterBuilder "github.com/pgplex/pgtui/internal/filter"
+	"github.com/pgplex/pgtui/internal/history"
+	"github.com/pgplex/pgtui/internal/jsonb"
+	"github.com/pgplex/pgtui/internal/models"
+	"github.com/pgplex/pgtui/internal/ui/components"
+	"github.com/pgplex/pgtui/internal/ui/help"
+	"github.com/pgplex/pgtui/internal/ui/theme"
 )
 
 // pendingPassword holds password info to save after successful connection
@@ -216,7 +216,7 @@ func New(cfg *config.Config) *App {
 		log.Printf("Warning: Could not get home directory: %v", err)
 		homeDir = "."
 	}
-	configDir := filepath.Join(homeDir, ".config", "lazypg")
+	configDir := filepath.Join(homeDir, ".config", "pgtui")
 	_ = os.MkdirAll(configDir, 0755)
 
 	historyPath := filepath.Join(configDir, "history.db")
@@ -2110,7 +2110,7 @@ func (a *App) renderNormalView() string {
 		connStatus = "  " + styles.connGray.Render("") + " " + styles.connGray.Render("Not connected")
 	}
 
-	topBarLeft := styles.appName.Render("  LazyPG ") + connStatus
+	topBarLeft := styles.appName.Render("  pgtui ") + connStatus
 	topBarRight := styles.topBarHelp.Render("? ") + styles.topBarHelpText.Render("help")
 	topBarContent := a.formatStatusBar(topBarLeft, topBarRight)
 
@@ -4547,7 +4547,7 @@ func (a *App) openExternalEditor(content string) tea.Cmd {
 		}
 
 		// Create temp file
-		tmpFile, err := os.CreateTemp("", "lazypg-*.sql")
+		tmpFile, err := os.CreateTemp("", "pgtui-*.sql")
 		if err != nil {
 			return components.ExternalEditorResultMsg{Error: err}
 		}

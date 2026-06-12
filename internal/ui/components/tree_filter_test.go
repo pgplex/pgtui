@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/rebelice/lazypg/internal/models"
+	"github.com/pgplex/pgtui/internal/models"
 )
 
 func TestParseSearchQuery_Simple(t *testing.T) {

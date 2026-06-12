@@ -1,7 +1,7 @@
 .PHONY: build run test clean install help sign
 
 # Build variables
-BINARY_NAME=lazypg
+BINARY_NAME=pgtui
 BUILD_DIR=bin
 VERSION?=dev
 LDFLAGS=-ldflags "-X main.version=${VERSION}"
@@ -16,7 +16,7 @@ help: ## Show this help message
 build: ## Build the binary (with code signing on macOS)
 	@echo "Building ${BINARY_NAME}..."
 	@mkdir -p ${BUILD_DIR}
-	@go build ${LDFLAGS} -o ${BUILD_DIR}/${BINARY_NAME} cmd/lazypg/main.go
+	@go build ${LDFLAGS} -o ${BUILD_DIR}/${BINARY_NAME} cmd/pgtui/main.go
 ifeq ($(UNAME_S),Darwin)
 	@echo "Signing binary for macOS keychain compatibility..."
 	@codesign -s - -f ${BUILD_DIR}/${BINARY_NAME}
@@ -46,7 +46,7 @@ clean: ## Remove build artifacts
 	@echo "Cleaned build artifacts"
 
 install: build ## Install binary to $GOPATH/bin (with code signing on macOS)
-	@go install ./cmd/lazypg
+	@go install ./cmd/pgtui
 ifeq ($(UNAME_S),Darwin)
 	@codesign -s - -f $(shell go env GOPATH)/bin/${BINARY_NAME}
 endif
@@ -64,6 +64,6 @@ deps: ## Download dependencies
 
 dev: ## Run in development mode with hot reload
 	@echo "Running in development mode (press Ctrl+C to stop)..."
-	@go run cmd/lazypg/main.go
+	@go run cmd/pgtui/main.go
 
 .DEFAULT_GOAL := help

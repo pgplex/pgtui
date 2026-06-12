@@ -7,8 +7,8 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	zone "github.com/lrstanley/bubblezone"
-	"github.com/rebelice/lazypg/internal/models"
-	"github.com/rebelice/lazypg/internal/ui/theme"
+	"github.com/pgplex/pgtui/internal/models"
+	"github.com/pgplex/pgtui/internal/ui/theme"
 )
 
 // Zone ID prefixes for mouse click handling

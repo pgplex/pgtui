@@ -4,7 +4,7 @@ This document provides guidance for AI assistants (Claude, GPT, etc.) working on
 
 ## Project Overview
 
-lazypg is a terminal UI client for PostgreSQL built with:
+pgtui is a terminal UI client for PostgreSQL built with:
 - [Bubble Tea](https://github.com/charmbracelet/bubbletea) - TUI framework
 - [Lip Gloss](https://github.com/charmbracelet/lipgloss) - Terminal styling
 - [pgx](https://github.com/jackc/pgx) - PostgreSQL driver
@@ -12,8 +12,8 @@ lazypg is a terminal UI client for PostgreSQL built with:
 ## Code Organization
 
 ```
-lazypg/
-├── cmd/lazypg/          # Main entry point
+pgtui/
+├── cmd/pgtui/          # Main entry point
 ├── internal/
 │   ├── app/             # Main application logic
 │   ├── ui/components/   # Reusable UI components

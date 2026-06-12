@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	zone "github.com/lrstanley/bubblezone"
-	"github.com/rebelice/lazypg/internal/ui/theme"
+	"github.com/pgplex/pgtui/internal/ui/theme"
 )
 
 func init() {

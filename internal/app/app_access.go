@@ -7,12 +7,12 @@ import (
 	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/rebelice/lazypg/internal/app/delegates"
-	"github.com/rebelice/lazypg/internal/app/messages"
-	"github.com/rebelice/lazypg/internal/db/connection"
-	"github.com/rebelice/lazypg/internal/db/query"
-	"github.com/rebelice/lazypg/internal/models"
-	"github.com/rebelice/lazypg/internal/ui/components"
+	"github.com/pgplex/pgtui/internal/app/delegates"
+	"github.com/pgplex/pgtui/internal/app/messages"
+	"github.com/pgplex/pgtui/internal/db/connection"
+	"github.com/pgplex/pgtui/internal/db/query"
+	"github.com/pgplex/pgtui/internal/models"
+	"github.com/pgplex/pgtui/internal/ui/components"
 )
 
 // Ensure App implements AppAccess interface

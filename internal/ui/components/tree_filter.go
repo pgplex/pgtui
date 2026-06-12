@@ -4,7 +4,7 @@ package components
 import (
 	"strings"
 
-	"github.com/rebelice/lazypg/internal/models"
+	"github.com/pgplex/pgtui/internal/models"
 )
 
 // SearchQuery represents a parsed search query

@@ -7,8 +7,8 @@ import (
 	"github.com/atotto/clipboard"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/mattn/go-runewidth"
-	"github.com/rebelice/lazypg/internal/jsonb"
-	"github.com/rebelice/lazypg/internal/ui/theme"
+	"github.com/pgplex/pgtui/internal/jsonb"
+	"github.com/pgplex/pgtui/internal/ui/theme"
 )
 
 // PreviewPane displays full content for truncated values

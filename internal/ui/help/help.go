@@ -97,7 +97,7 @@ func Render(width, height int, theme lipgloss.Style) string {
 	var b strings.Builder
 
 	// Title
-	b.WriteString(titleStyle.Render("lazypg - Keyboard Shortcuts"))
+	b.WriteString(titleStyle.Render("pgtui - Keyboard Shortcuts"))
 	b.WriteString("\n\n")
 
 	// Global keys

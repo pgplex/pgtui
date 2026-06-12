@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/rebelice/lazypg/internal/db/connection"
+	"github.com/pgplex/pgtui/internal/db/connection"
 )
 
 // toString safely converts an interface{} to string

@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rebelice/lazypg/internal/models"
+	"github.com/pgplex/pgtui/internal/models"
 )
 
 // Manager manages multiple database connections

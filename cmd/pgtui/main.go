@@ -8,8 +8,8 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 	zone "github.com/lrstanley/bubblezone"
-	"github.com/rebelice/lazypg/internal/app"
-	"github.com/rebelice/lazypg/internal/config"
+	"github.com/pgplex/pgtui/internal/app"
+	"github.com/pgplex/pgtui/internal/config"
 )
 
 func main() {

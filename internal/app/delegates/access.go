@@ -4,9 +4,9 @@ import (
 	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/rebelice/lazypg/internal/db/connection"
-	"github.com/rebelice/lazypg/internal/models"
-	"github.com/rebelice/lazypg/internal/ui/components"
+	"github.com/pgplex/pgtui/internal/db/connection"
+	"github.com/pgplex/pgtui/internal/models"
+	"github.com/pgplex/pgtui/internal/ui/components"
 )
 
 // AppAccess defines what delegates can access from the App.

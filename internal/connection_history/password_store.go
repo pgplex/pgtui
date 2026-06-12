@@ -9,7 +9,7 @@ import (
 	"github.com/99designs/keyring"
 )
 
-const serviceName = "lazypg"
+const serviceName = "pgtui"
 
 // PasswordStore handles secure password storage using OS keyring with file fallback
 type PasswordStore struct {
@@ -113,8 +113,8 @@ func (ps *PasswordStore) Save(host string, port int, database, user, password st
 	err := ps.ring.Set(keyring.Item{
 		Key:         key,
 		Data:        []byte(password),
-		Label:       fmt.Sprintf("lazypg: %s@%s:%d/%s", user, host, port, database),
-		Description: "PostgreSQL connection password for lazypg",
+		Label:       fmt.Sprintf("pgtui: %s@%s:%d/%s", user, host, port, database),
+		Description: "PostgreSQL connection password for pgtui",
 	})
 	if err != nil {
 		return &PasswordSaveError{

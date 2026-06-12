@@ -117,7 +117,7 @@ func Load() (*Config, error) {
 	// Add config paths in priority order
 	// 1. User config directory
 	if configDir, err := os.UserConfigDir(); err == nil {
-		v.AddConfigPath(filepath.Join(configDir, "lazypg"))
+		v.AddConfigPath(filepath.Join(configDir, "pgtui"))
 	}
 
 	// 2. Current directory
@@ -176,5 +176,5 @@ func GetConfigPath() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return filepath.Join(configDir, "lazypg"), nil
+	return filepath.Join(configDir, "pgtui"), nil
 }

@@ -4,7 +4,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/rebelice/lazypg/internal/models"
+	"github.com/pgplex/pgtui/internal/models"
 )
 
 // Registry manages available commands

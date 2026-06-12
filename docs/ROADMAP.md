@@ -1,10 +1,10 @@
 # Roadmap
 
-This document outlines planned features and improvements for lazypg.
+This document outlines planned features and improvements for pgtui.
 
 ## Current Status: Beta
 
-lazypg is currently in beta. Core functionality is complete and stable, but some advanced features are still in development.
+pgtui is currently in beta. Core functionality is complete and stable, but some advanced features are still in development.
 
 ## Planned Features
 

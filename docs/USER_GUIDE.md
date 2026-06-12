@@ -1,6 +1,6 @@
-# lazypg User Guide
+# pgtui User Guide
 
-A complete guide to using lazypg, the terminal UI for PostgreSQL.
+A complete guide to using pgtui, the terminal UI for PostgreSQL.
 
 ## Table of Contents
 
@@ -19,10 +19,10 @@ A complete guide to using lazypg, the terminal UI for PostgreSQL.
 
 ## Getting Started
 
-Launch lazypg from your terminal:
+Launch pgtui from your terminal:
 
 ```bash
-lazypg
+pgtui
 ```
 
 The interface has two main panels:
@@ -37,7 +37,7 @@ Press `Tab` to switch between panels, `?` for help, `q` to quit.
 
 ### Auto-Discovery
 
-On startup, lazypg shows a connection dialog with:
+On startup, pgtui shows a connection dialog with:
 - **Recent connections**: Your connection history
 - **Discovered instances**: Local PostgreSQL instances found automatically
 
@@ -230,7 +230,7 @@ Press `Ctrl+K` to open the command palette.
 | Query History | Browse past queries |
 | Favorites | Manage saved queries |
 | Help | Show keyboard shortcuts |
-| Settings | Configure lazypg |
+| Settings | Configure pgtui |
 
 ### Navigation
 
@@ -342,7 +342,7 @@ Export favorites via command palette:
 
 ## Configuration
 
-Configuration files are stored in `~/.config/lazypg/`:
+Configuration files are stored in `~/.config/pgtui/`:
 
 | File | Purpose |
 |------|---------|
@@ -369,7 +369,7 @@ performance:
 
 ## Mouse Support
 
-lazypg supports mouse interactions:
+pgtui supports mouse interactions:
 
 - **Click**: Select items, switch tabs, navigate
 - **Scroll**: Scroll through data and lists

@@ -1,4 +1,4 @@
-module github.com/rebelice/lazypg
+module github.com/pgplex/pgtui
 
 go 1.24.0
 

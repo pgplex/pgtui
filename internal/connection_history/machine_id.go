@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-const passwordSalt = "lazypg-keyring-salt-v1"
+const passwordSalt = "pgtui-keyring-salt-v1"
 
 // deriveFilePassword generates a machine-specific password for the file backend.
 // This password is derived from machine ID and username, so it's consistent

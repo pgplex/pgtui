@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rebelice/lazypg/internal/models"
+	"github.com/pgplex/pgtui/internal/models"
 )
 
 func TestExportToCSV(t *testing.T) {

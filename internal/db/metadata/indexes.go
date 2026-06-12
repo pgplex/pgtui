@@ -5,8 +5,8 @@ import (
 	"fmt"
 
 	"github.com/jackc/pgx/v5/pgtype"
-	"github.com/rebelice/lazypg/internal/db/connection"
-	"github.com/rebelice/lazypg/internal/models"
+	"github.com/pgplex/pgtui/internal/db/connection"
+	"github.com/pgplex/pgtui/internal/models"
 )
 
 // GetIndexes retrieves all indexes for a table

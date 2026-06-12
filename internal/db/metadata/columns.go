@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/rebelice/lazypg/internal/db/connection"
-	"github.com/rebelice/lazypg/internal/models"
+	"github.com/pgplex/pgtui/internal/db/connection"
+	"github.com/pgplex/pgtui/internal/models"
 )
 
 // GetTableColumns retrieves column metadata for a table

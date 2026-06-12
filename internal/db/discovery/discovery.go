@@ -5,7 +5,7 @@ import (
 	"sort"
 	"strconv"
 
-	"github.com/rebelice/lazypg/internal/models"
+	"github.com/pgplex/pgtui/internal/models"
 )
 
 // Discoverer coordinates all discovery methods

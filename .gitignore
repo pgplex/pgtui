@@ -1,5 +1,5 @@
 # Binaries
-/lazypg
+/pgtui
 bin/
 *.exe
 *.dll

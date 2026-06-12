@@ -3,7 +3,7 @@ package metadata
 import (
 	"context"
 
-	"github.com/rebelice/lazypg/internal/db/connection"
+	"github.com/pgplex/pgtui/internal/db/connection"
 )
 
 // Database represents a PostgreSQL database

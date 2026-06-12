@@ -1,10 +1,10 @@
 > [!NOTE]
 > pgplex: Modern Developer Stack for Postgres - [pgconsole](https://github.com/pgplex/pgconsole) · **pgtui** · [pgschema](https://github.com/pgplex/pgschema) · [pgparser](https://github.com/pgplex/pgparser)
 
-# lazypg
+# pgtui
 
 <p align="center">
-  <img src="assets/logo.png" alt="lazypg logo" width="400">
+  <img src="assets/logo.png" alt="pgtui logo" width="400">
 </p>
 
 <p align="center">
@@ -12,10 +12,10 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/rebelice/lazypg/releases"><img src="https://img.shields.io/github/v/release/rebelice/lazypg?style=flat-square" alt="Release"></a>
-  <a href="https://github.com/rebelice/lazypg/actions"><img src="https://img.shields.io/github/actions/workflow/status/rebelice/lazypg/ci.yml?branch=main&style=flat-square" alt="Build Status"></a>
-  <a href="https://github.com/rebelice/lazypg/blob/main/LICENSE"><img src="https://img.shields.io/github/license/rebelice/lazypg?style=flat-square" alt="License"></a>
-  <a href="https://goreportcard.com/report/github.com/rebelice/lazypg"><img src="https://goreportcard.com/badge/github.com/rebelice/lazypg?style=flat-square" alt="Go Report Card"></a>
+  <a href="https://github.com/pgplex/pgtui/releases"><img src="https://img.shields.io/github/v/release/pgplex/pgtui?style=flat-square" alt="Release"></a>
+  <a href="https://github.com/pgplex/pgtui/actions"><img src="https://img.shields.io/github/actions/workflow/status/pgplex/pgtui/ci.yml?branch=main&style=flat-square" alt="Build Status"></a>
+  <a href="https://github.com/pgplex/pgtui/blob/main/LICENSE"><img src="https://img.shields.io/github/license/pgplex/pgtui?style=flat-square" alt="License"></a>
+  <a href="https://goreportcard.com/report/github.com/pgplex/pgtui"><img src="https://goreportcard.com/badge/github.com/pgplex/pgtui?style=flat-square" alt="Go Report Card"></a>
 </p>
 
 <p align="center">
@@ -31,7 +31,7 @@
 
 > **Status: Beta** — Core features are stable and ready for daily use. See [Roadmap](docs/ROADMAP.md) for planned features.
 
-## Why lazypg?
+## Why pgtui?
 
 If you're anything like me, you love PostgreSQL but hate context-switching between your terminal and a heavy GUI client just to peek at some data. You want something that:
 
@@ -39,10 +39,10 @@ If you're anything like me, you love PostgreSQL but hate context-switching betwe
 - **Respects your muscle memory** — Vim-style navigation because your fingers already know the way
 - **Gets out of your way** — connect, browse, filter, done
 
-That's lazypg. Inspired by [lazygit](https://github.com/jesseduffield/lazygit), built for developers who live in the terminal.
+That's pgtui. Inspired by [lazygit](https://github.com/jesseduffield/lazygit), built for developers who live in the terminal.
 
 <p align="center">
-  <img src="assets/demo.gif" alt="lazypg demo" width="800">
+  <img src="assets/demo.gif" alt="pgtui demo" width="800">
 </p>
 
 ## Features
@@ -90,26 +90,26 @@ Write and execute SQL directly. Results appear in tabs, so you can run multiple 
 ### Homebrew (macOS/Linux)
 
 ```bash
-brew install rebelice/tap/lazypg
+brew install pgplex/pgtui/pgtui
 ```
 
 ### Go Install
 
 ```bash
-go install github.com/rebelice/lazypg/cmd/lazypg@latest
+go install github.com/pgplex/pgtui/cmd/pgtui@latest
 ```
 
 ### Download Binary
 
-Download the latest release from the [Releases page](https://github.com/rebelice/lazypg/releases).
+Download the latest release from the [Releases page](https://github.com/pgplex/pgtui/releases).
 
 ### Build from Source
 
 ```bash
-git clone https://github.com/rebelice/lazypg.git
-cd lazypg
+git clone https://github.com/pgplex/pgtui.git
+cd pgtui
 make build
-./bin/lazypg
+./bin/pgtui
 ```
 
 ### Requirements
@@ -119,9 +119,9 @@ make build
 
 ## Quick Start
 
-1. **Launch lazypg**
+1. **Launch pgtui**
    ```bash
-   lazypg
+   pgtui
    ```
 
 2. **Connect to a database**
@@ -185,7 +185,7 @@ make build
 
 ## Configuration
 
-lazypg stores configuration in `~/.config/lazypg/`:
+pgtui stores configuration in `~/.config/pgtui/`:
 
 | File | Purpose |
 |------|---------|
@@ -219,8 +219,8 @@ Contributions are welcome! Whether it's bug reports, feature requests, or pull r
 
 ```bash
 # Setup
-git clone https://github.com/rebelice/lazypg.git
-cd lazypg
+git clone https://github.com/pgplex/pgtui.git
+cd pgtui
 make deps
 
 # Development
@@ -234,17 +234,17 @@ Please read [DEVELOPMENT.md](docs/DEVELOPMENT.md) before submitting a PR.
 
 ## Star History
 
-<a href="https://star-history.com/#rebelice/lazypg&Date">
+<a href="https://star-history.com/#pgplex/pgtui&Date">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=rebelice/lazypg&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=rebelice/lazypg&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=rebelice/lazypg&type=Date" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=pgplex/pgtui&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=pgplex/pgtui&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=pgplex/pgtui&type=Date" />
  </picture>
 </a>
 
 ## Acknowledgments
 
-lazypg wouldn't exist without these amazing projects:
+pgtui wouldn't exist without these amazing projects:
 
 - [lazygit](https://github.com/jesseduffield/lazygit) — The inspiration for this project
 - [Bubble Tea](https://github.com/charmbracelet/bubbletea) — The TUI framework

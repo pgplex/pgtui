@@ -5,9 +5,9 @@ import (
 	"log"
 
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/rebelice/lazypg/internal/app/messages"
-	"github.com/rebelice/lazypg/internal/models"
-	"github.com/rebelice/lazypg/internal/ui/components"
+	"github.com/pgplex/pgtui/internal/app/messages"
+	"github.com/pgplex/pgtui/internal/models"
+	"github.com/pgplex/pgtui/internal/ui/components"
 )
 
 // DataDelegate handles table data loading and display messages.
