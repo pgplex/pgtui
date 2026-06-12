@@ -1,5 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1536" height="1024" viewBox="0 0 1536 1024">
-  <g transform="translate(0,40)">
+  <!-- icon: drawn in its original coordinates, scaled and centered at (410, 512) -->
+  <g transform="translate(410,512) scale(0.70) translate(-415,-472)">
     <!-- elephant peeking over the terminal -->
     <g stroke="#1E3D5C" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
       <ellipse cx="285" cy="310" rx="78" ry="92" fill="#3D7DB0"/>
@@ -29,8 +30,8 @@
     <!-- prompt chevron -->
     <path d="M 276 586 L 334 634 L 276 682" fill="none"
           stroke="#FBF3E9" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
-
-    <!-- wordmark -->
-    <text x="700" y="570" font-family="Arial Rounded MT Bold, Arial, sans-serif" font-size="230" font-weight="bold" fill="#1E3D5C">pgtui</text>
   </g>
+
+  <!-- wordmark -->
+  <text x="640" y="590" font-family="Arial Rounded MT Bold, Arial, sans-serif" font-size="240" font-weight="bold" fill="#1E3D5C">pgtui</text>
 </svg>
