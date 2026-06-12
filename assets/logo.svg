@@ -1,6 +1,4 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1536" height="1024" viewBox="0 0 1536 1024">
-  <rect width="1536" height="1024" fill="#FBF3E9"/>
-
   <g transform="translate(0,40)">
     <!-- elephant peeking over the terminal -->
     <g stroke="#1E3D5C" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
@@ -28,11 +26,9 @@
             stroke="#4F94C9" stroke-width="30"/>
     </g>
 
-    <!-- prompt inside terminal -->
-    <g fill="#FBF3E9">
-      <path d="M 262 590 L 326 634 L 262 678 L 262 646 L 290 634 L 262 622 Z"/>
-      <rect x="348" y="606" width="72" height="56" rx="8"/>
-    </g>
+    <!-- prompt chevron -->
+    <path d="M 276 586 L 334 634 L 276 682" fill="none"
+          stroke="#FBF3E9" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
 
     <!-- wordmark -->
     <text x="700" y="570" font-family="Arial Rounded MT Bold, Arial, sans-serif" font-size="230" font-weight="bold" fill="#1E3D5C">pgtui</text>
