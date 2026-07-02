@@ -1,14 +1,10 @@
 > [!NOTE]
-> pgplex: Modern Developer Stack for Postgres - [pgconsole](https://github.com/pgplex/pgconsole) · **pgtui** · [pgschema](https://github.com/pgplex/pgschema) · [pgparser](https://github.com/pgplex/pgparser)
-> 
 > Brought to you by [Bytebase](https://www.bytebase.com/), open-source database DevSecOps platform.
 
 
 # pgtui
 
-<p align="center">
-  <img src="assets/logo.png" alt="pgtui logo" width="400">
-</p>
+![](https://raw.githubusercontent.com/pgplex/website/refs/heads/main/public/banner-pgtui.png)
 
 <p align="center">
   <strong>A simple terminal UI for PostgreSQL, written in Go with the <a href="https://github.com/charmbracelet/bubbletea">Bubble Tea</a> framework.</strong>
