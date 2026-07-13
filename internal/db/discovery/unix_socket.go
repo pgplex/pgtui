@@ -54,7 +54,7 @@ func (s *Scanner) ScanUnixSocketDirs(ctx context.Context, dirs []string) []model
 		}
 
 		for _, instance := range s.scanUnixSocketDir(ctx, dir) {
-			key := instance.DisplayTarget()
+			key := instanceKey(instance)
 			if _, exists := seen[key]; exists {
 				continue
 			}

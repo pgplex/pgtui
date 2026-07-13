@@ -147,6 +147,31 @@ func TestUniqueSocketDirsNormalizesAndResolvesSymlinks(t *testing.T) {
 	}
 }
 
+func TestInstanceKeyNormalizesSocketSymlinks(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("symlinks require elevated permissions on some windows setups")
+	}
+
+	tempDir := t.TempDir()
+	target := filepath.Join(tempDir, "target")
+	link := filepath.Join(tempDir, "link")
+	if err := os.Mkdir(target, 0o755); err != nil {
+		t.Fatalf("mkdir target: %v", err)
+	}
+	if err := os.Symlink(target, link); err != nil {
+		t.Fatalf("symlink target: %v", err)
+	}
+
+	targetInstance := models.DiscoveredInstance{Host: target, Port: 5432}
+	linkInstance := models.DiscoveredInstance{Host: link, Port: 5432}
+	if instanceKey(targetInstance) != instanceKey(linkInstance) {
+		t.Fatalf("expected symlinked socket dirs to share an instance key")
+	}
+	if targetInstance.DisplayTarget() == linkInstance.DisplayTarget() {
+		t.Fatalf("expected display targets to preserve original paths")
+	}
+}
+
 func TestScanBroadUnixSocketDirChecksKnownPortsOnly(t *testing.T) {
 	if runtime.GOOS == "windows" {
 		t.Skip("unix sockets are not supported on windows")
