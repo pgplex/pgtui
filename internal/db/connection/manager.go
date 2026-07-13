@@ -179,5 +179,5 @@ func generateConnectionID(config models.ConnectionConfig) string {
 	if config.Name != "" {
 		return config.Name
 	}
-	return fmt.Sprintf("%s@%s:%d/%s", config.User, config.Host, config.Port, config.Database)
+	return config.ConnectionLabel()
 }

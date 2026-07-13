@@ -29,34 +29,47 @@ func (d *Discoverer) DiscoverAll(ctx context.Context) []models.DiscoveredInstanc
 		instances = append(instances, *envInstance)
 	}
 
-	// 2. Scan localhost ports
-	localInstances := d.scanner.ScanLocalhost(ctx)
-	instances = append(instances, localInstances...)
+	// 2. Scan common Unix socket directories
+	instances = append(instances, d.scanner.ScanUnixSockets(ctx)...)
 
-	// 3. Parse .pgpass
-	pgpassInstances := GetDiscoveredInstances()
-	instances = append(instances, pgpassInstances...)
+	// 3. Scan localhost ports
+	instances = append(instances, d.scanner.ScanLocalhost(ctx)...)
+
+	// 4. Parse .pgpass
+	instances = append(instances, GetDiscoveredInstances()...)
 
 	// Deduplicate
 	instances = deduplicateInstances(instances)
 
 	// Sort by source priority
-	sort.Slice(instances, func(i, j int) bool {
-		return instances[i].Source < instances[j].Source
-	})
+	sortDiscoveredInstances(instances)
 
 	return instances
 }
 
-// deduplicateInstances removes duplicate host:port combinations
+func sortDiscoveredInstances(instances []models.DiscoveredInstance) {
+	sort.Slice(instances, func(i, j int) bool {
+		if instances[i].Source != instances[j].Source {
+			return discoverySourcePriority(instances[i].Source) < discoverySourcePriority(instances[j].Source)
+		}
+
+		if instances[i].Host != instances[j].Host {
+			return instances[i].Host < instances[j].Host
+		}
+
+		return instances[i].Port < instances[j].Port
+	})
+}
+
+// deduplicateInstances removes duplicate connection targets.
 func deduplicateInstances(instances []models.DiscoveredInstance) []models.DiscoveredInstance {
 	seen := make(map[string]models.DiscoveredInstance)
 
 	for _, instance := range instances {
-		key := instance.Host + ":" + strconv.Itoa(instance.Port)
+		key := instanceKey(instance)
 
 		// Keep the one with higher priority source
-		if existing, exists := seen[key]; !exists || instance.Source < existing.Source {
+		if existing, exists := seen[key]; !exists || discoverySourcePriority(instance.Source) < discoverySourcePriority(existing.Source) {
 			seen[key] = instance
 		}
 	}
@@ -67,4 +80,32 @@ func deduplicateInstances(instances []models.DiscoveredInstance) []models.Discov
 	}
 
 	return result
+}
+
+func instanceKey(instance models.DiscoveredInstance) string {
+	host := instance.Host
+	if instance.UsesUnixSocket() {
+		host = socketDirKey(host)
+	}
+
+	return host + ":" + strconv.Itoa(instance.Port)
+}
+
+func discoverySourcePriority(source models.DiscoverySource) int {
+	switch source {
+	case models.SourceEnvironment:
+		return 0
+	case models.SourcePgPass:
+		return 1
+	case models.SourcePgService:
+		return 2
+	case models.SourceConfig:
+		return 3
+	case models.SourceUnixSocket:
+		return 4
+	case models.SourcePortScan:
+		return 5
+	default:
+		return 100
+	}
 }

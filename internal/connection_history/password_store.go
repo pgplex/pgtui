@@ -7,6 +7,7 @@ import (
 	"runtime"
 
 	"github.com/99designs/keyring"
+	"github.com/pgplex/pgtui/internal/models"
 )
 
 const serviceName = "pgtui"
@@ -113,7 +114,7 @@ func (ps *PasswordStore) Save(host string, port int, database, user, password st
 	err := ps.ring.Set(keyring.Item{
 		Key:         key,
 		Data:        []byte(password),
-		Label:       fmt.Sprintf("pgtui: %s@%s:%d/%s", user, host, port, database),
+		Label:       "pgtui: " + (models.ConnectionConfig{Host: host, Port: port, Database: database, User: user}).ConnectionLabel(),
 		Description: "PostgreSQL connection password for pgtui",
 	})
 	if err != nil {

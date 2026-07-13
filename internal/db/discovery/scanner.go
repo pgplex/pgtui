@@ -2,8 +2,8 @@ package discovery
 
 import (
 	"context"
-	"fmt"
 	"net"
+	"strconv"
 	"sync"
 	"time"
 
@@ -73,7 +73,7 @@ func (s *Scanner) scanPort(ctx context.Context, host string, port int) models.Di
 	}
 
 	start := time.Now()
-	address := fmt.Sprintf("%s:%d", host, port)
+	address := net.JoinHostPort(host, strconv.Itoa(port))
 
 	dialer := &net.Dialer{
 		Timeout: s.timeout,

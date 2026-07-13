@@ -1484,8 +1484,8 @@ func (a *App) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if msg.Err != nil {
 			// Connection failed - clear pending password (don't save wrong password)
 			a.pendingPasswordSave = nil
-			a.ShowError("Connection Failed", fmt.Sprintf("Could not connect to %s:%d\n\nError: %v",
-				msg.Config.Host, msg.Config.Port, msg.Err))
+			a.ShowError("Connection Failed", fmt.Sprintf("Could not connect to %s\n\nError: %v",
+				msg.Config.DisplayTarget(), msg.Err))
 			return a, nil
 		}
 
@@ -2099,11 +2099,7 @@ func (a *App) renderNormalView() string {
 	if a.state.ActiveConnection != nil {
 		// Build connection string with elegant formatting
 		conn := a.state.ActiveConnection
-		connStr := fmt.Sprintf("%s@%s:%d/%s",
-			conn.Config.User,
-			conn.Config.Host,
-			conn.Config.Port,
-			conn.Config.Database)
+		connStr := conn.Config.ConnectionLabel()
 
 		connStatus = "  " + styles.connGreen.Render("") + " " + styles.connText.Render(connStr)
 	} else {
@@ -3160,17 +3156,7 @@ func (a *App) connectToHistoryEntry(entry models.ConnectionHistoryEntry) (tea.Mo
 
 // connectToDiscoveredInstance connects using a discovered instance
 func (a *App) connectToDiscoveredInstance(instance models.DiscoveredInstance) (tea.Model, tea.Cmd) {
-	// Create connection config from discovered instance
-	config := models.ConnectionConfig{
-		Host:     instance.Host,
-		Port:     instance.Port,
-		Database: "postgres",        // Default database
-		User:     os.Getenv("USER"), // Current user
-		Password: "",                // No password for now
-		SSLMode:  "prefer",
-	}
-
-	return a.performConnection(config)
+	return a.performConnection(discovery.BuildConnectionConfig(instance))
 }
 
 // performConnection starts an async connection attempt
@@ -3325,56 +3311,21 @@ func (a *App) handleConnectionDialog(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 				return a, nil
 			}
 			return a.performConnection(config)
-		} else {
-			var config models.ConnectionConfig
-
-			// Check if browsing history or discovered instances
-			if a.connectionDialog.InHistorySection {
-				// Get selected history entry
-				historyEntry := a.connectionDialog.GetSelectedHistory()
-				if historyEntry == nil {
-					// No history entry selected
-					return a, nil
-				}
-
-				// Convert history entry to connection config WITH password from keyring
-				if a.connectionHistory != nil {
-					result := a.connectionHistory.GetConnectionConfigWithPassword(historyEntry)
-					config = result.Config
-
-					// If password is missing, show password dialog
-					if result.PasswordMissing {
-						entryCopy := *historyEntry
-						a.pendingConnectionInfo = &entryCopy
-						a.passwordDialog.SetConnectionInfo(historyEntry.Host, historyEntry.Port, historyEntry.Database, historyEntry.User)
-						a.showPasswordDialog = true
-						a.showConnectionDialog = false
-						return a, a.passwordDialog.Init()
-					}
-				} else {
-					config = historyEntry.ToConnectionConfig()
-				}
-			} else {
-				// Get selected discovered instance
-				instance := a.connectionDialog.GetSelectedInstance()
-				if instance == nil {
-					// No instance selected
-					return a, nil
-				}
-
-				// Create connection config from discovered instance
-				config = models.ConnectionConfig{
-					Host:     instance.Host,
-					Port:     instance.Port,
-					Database: "postgres",
-					User:     os.Getenv("USER"),
-					Password: "",
-					SSLMode:  "prefer",
-				}
-			}
-
-			return a.performConnection(config)
 		}
+
+		if a.connectionDialog.InHistorySection {
+			historyEntry := a.connectionDialog.GetSelectedHistory()
+			if historyEntry == nil {
+				return a, nil
+			}
+			return a.connectToHistoryEntry(*historyEntry)
+		}
+
+		instance := a.connectionDialog.GetSelectedInstance()
+		if instance == nil {
+			return a, nil
+		}
+		return a.connectToDiscoveredInstance(*instance)
 
 	default:
 		// In manual mode, delegate to textinput for cursor and text handling
@@ -3653,12 +3604,7 @@ func (a *App) renderConnectingOverlay() string {
 	hostStyle := lipgloss.NewStyle().Foreground(a.theme.Foreground)
 	hintStyle := lipgloss.NewStyle().Foreground(a.theme.Metadata)
 
-	hostInfo := fmt.Sprintf("%s@%s:%d/%s",
-		a.connectingConfig.User,
-		a.connectingConfig.Host,
-		a.connectingConfig.Port,
-		a.connectingConfig.Database,
-	)
+	hostInfo := a.connectingConfig.ConnectionLabel()
 
 	// Build each line separately
 	line1 := a.executeSpinner.View() + " " + loadingStyle.Render("Connecting...") + " " + elapsedStyle.Render(elapsedStr)

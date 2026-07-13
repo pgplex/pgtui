@@ -145,7 +145,7 @@ func (m *Manager) Add(config models.ConnectionConfig) (*AddResult, error) {
 	// Create new entry
 	name := config.Name
 	if name == "" {
-		name = fmt.Sprintf("%s@%s:%d/%s", config.User, config.Host, config.Port, config.Database)
+		name = config.ConnectionLabel()
 	}
 
 	entry := models.ConnectionHistoryEntry{
