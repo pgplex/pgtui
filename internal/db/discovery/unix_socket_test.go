@@ -126,8 +126,14 @@ func TestBuildConnectionConfigForEnvironmentUsesEnvironmentConfig(t *testing.T) 
 	if config.User != "envuser" {
 		t.Fatalf("expected environment user, got %q", config.User)
 	}
-	if config.Password != "secret" {
-		t.Fatal("expected environment password")
+	// Password is intentionally left empty: libpq reads PGPASSWORD from the
+	// environment, and keeping it out of the config prevents persisting it to
+	// the keyring.
+	if config.Password != "" {
+		t.Fatalf("expected empty password (sourced via PGPASSWORD), got %q", config.Password)
+	}
+	if config.Name != "" {
+		t.Fatalf("expected empty name to avoid leaking into connection ID/history, got %q", config.Name)
 	}
 	if config.SSLMode != "require" {
 		t.Fatalf("expected environment sslmode, got %q", config.SSLMode)

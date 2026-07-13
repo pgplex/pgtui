@@ -8,15 +8,24 @@ import (
 )
 
 // BuildConnectionConfig turns a discovered instance into a connection config.
+// The returned config intentionally omits the password for environment and
+// .pgpass sources: libpq (pgx) reads PGPASSWORD and ~/.pgpass itself, and
+// leaving the password empty prevents it from being persisted to the keyring
+// (those secrets already have their own source).
 func BuildConnectionConfig(instance models.DiscoveredInstance) models.ConnectionConfig {
 	switch instance.Source {
 	case models.SourceEnvironment:
 		if envConfig := GetEnvironmentConfig(); envConfig != nil {
-			return *envConfig
+			config := *envConfig
+			config.Name = "" // avoid leaking the generic "Environment" label into connection ID/history
+			config.Password = ""
+			return config
 		}
 	case models.SourcePgPass:
 		if pgpassConfig := buildPgPassConfig(instance.Host, instance.Port); pgpassConfig != nil {
-			return *pgpassConfig
+			config := *pgpassConfig
+			config.Password = ""
+			return config
 		}
 	}
 
