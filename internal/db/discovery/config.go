@@ -63,7 +63,7 @@ func buildDefaultConfig(instance models.DiscoveredInstance) models.ConnectionCon
 	return models.ConnectionConfig{
 		Host:     instance.Host,
 		Port:     instance.Port,
-		Database: defaultDatabase(user),
+		Database: "postgres",
 		User:     user,
 		SSLMode:  "prefer",
 	}

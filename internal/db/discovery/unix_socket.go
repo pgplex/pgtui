@@ -25,6 +25,11 @@ var defaultUnixSocketDirs = []string{
 	"/usr/local/var/run/postgresql",
 }
 
+var broadUnixSocketDirs = map[string]struct{}{
+	"/tmp":         {},
+	"/private/tmp": {},
+}
+
 // ScanUnixSockets scans common PostgreSQL socket directories.
 func (s *Scanner) ScanUnixSockets(ctx context.Context) []models.DiscoveredInstance {
 	if runtime.GOOS == "windows" {
@@ -63,6 +68,10 @@ func (s *Scanner) ScanUnixSocketDirs(ctx context.Context, dirs []string) []model
 }
 
 func (s *Scanner) scanUnixSocketDir(ctx context.Context, dir string) []models.DiscoveredInstance {
+	if isBroadUnixSocketDir(dir) {
+		return s.scanKnownUnixSocketPorts(ctx, dir)
+	}
+
 	entries, err := os.ReadDir(dir)
 	if err != nil {
 		return nil
@@ -77,6 +86,23 @@ func (s *Scanner) scanUnixSocketDir(ctx context.Context, dir string) []models.Di
 		port, ok := postgresSocketPort(entry.Name())
 		if !ok {
 			continue
+		}
+
+		instance := s.scanUnixSocket(ctx, dir, port)
+		if instance.Available {
+			instances = append(instances, instance)
+		}
+	}
+
+	return instances
+}
+
+func (s *Scanner) scanKnownUnixSocketPorts(ctx context.Context, dir string) []models.DiscoveredInstance {
+	instances := make([]models.DiscoveredInstance, 0, len(DefaultPorts))
+
+	for _, port := range candidateUnixSocketPorts() {
+		if ctx.Err() != nil {
+			break
 		}
 
 		instance := s.scanUnixSocket(ctx, dir, port)
@@ -111,10 +137,13 @@ func (s *Scanner) scanUnixSocket(ctx context.Context, dir string, port int) mode
 }
 
 func candidateUnixSocketDirs() []string {
-	dirs := make([]string, 0, len(defaultUnixSocketDirs)+1)
+	dirs := make([]string, 0, len(defaultUnixSocketDirs)+len(strings.Split(os.Getenv("PGHOST"), ",")))
 
-	if host := strings.TrimSpace(os.Getenv("PGHOST")); strings.HasPrefix(host, "/") {
-		dirs = append(dirs, host)
+	for _, host := range strings.Split(os.Getenv("PGHOST"), ",") {
+		host = strings.TrimSpace(host)
+		if strings.HasPrefix(host, "/") {
+			dirs = append(dirs, host)
+		}
 	}
 
 	dirs = append(dirs, defaultUnixSocketDirs...)
@@ -130,13 +159,53 @@ func uniqueSocketDirs(dirs []string) []string {
 		if dir == "" {
 			continue
 		}
+		dir = filepath.Clean(dir)
 
-		if _, exists := seen[dir]; exists {
+		key := socketDirKey(dir)
+		if _, exists := seen[key]; exists {
 			continue
 		}
 
-		seen[dir] = struct{}{}
+		seen[key] = struct{}{}
 		unique = append(unique, dir)
+	}
+
+	return unique
+}
+
+func socketDirKey(dir string) string {
+	resolved, err := filepath.EvalSymlinks(dir)
+	if err != nil {
+		return dir
+	}
+
+	return filepath.Clean(resolved)
+}
+
+func isBroadUnixSocketDir(dir string) bool {
+	_, ok := broadUnixSocketDirs[socketDirKey(filepath.Clean(dir))]
+	return ok
+}
+
+func candidateUnixSocketPorts() []int {
+	ports := append([]int(nil), DefaultPorts...)
+
+	if portStr := strings.TrimSpace(os.Getenv("PGPORT")); portStr != "" {
+		port, err := strconv.Atoi(portStr)
+		if err == nil && port >= 1 && port <= 65535 {
+			ports = append([]int{port}, ports...)
+		}
+	}
+
+	unique := ports[:0]
+	seen := make(map[int]struct{}, len(ports))
+	for _, port := range ports {
+		if _, exists := seen[port]; exists {
+			continue
+		}
+
+		seen[port] = struct{}{}
+		unique = append(unique, port)
 	}
 
 	return unique

@@ -49,7 +49,7 @@ func GetEnvironmentConfig() *models.ConnectionConfig {
 		host = "localhost"
 	}
 	if user == "" {
-		user = os.Getenv("USER")
+		user = defaultUser()
 	}
 	if database == "" {
 		database = user
