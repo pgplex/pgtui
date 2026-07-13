@@ -23,15 +23,16 @@ func BuildConnectionConfig(instance models.DiscoveredInstance) models.Connection
 		}
 	case models.SourcePgPass:
 		if pgpassConfig := buildPgPassConfig(instance.Host, instance.Port); pgpassConfig != nil {
-			config := *pgpassConfig
-			config.Password = ""
-			return config
+			return *pgpassConfig
 		}
 	}
 
 	return buildDefaultConfig(instance)
 }
 
+// buildPgPassConfig maps a .pgpass entry to connection fields. Password is left
+// empty: libpq reads ~/.pgpass itself, and omitting it here keeps secrets out of
+// the keyring (same rationale as BuildConnectionConfig for env/.pgpass).
 func buildPgPassConfig(host string, port int) *models.ConnectionConfig {
 	entries, err := ParsePgPass()
 	if err != nil {
@@ -58,7 +59,6 @@ func buildPgPassConfig(host string, port int) *models.ConnectionConfig {
 			Port:     port,
 			Database: database,
 			User:     user,
-			Password: entry.Password,
 			SSLMode:  "prefer",
 		}
 	}

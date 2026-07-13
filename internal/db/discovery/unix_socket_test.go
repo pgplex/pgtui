@@ -8,6 +8,7 @@ import (
 	"runtime"
 	"strconv"
 	"testing"
+	"time"
 
 	"github.com/pgplex/pgtui/internal/models"
 )
@@ -41,7 +42,11 @@ func TestScanUnixSocketDirs(t *testing.T) {
 		t.Fatal("expected discovered socket to be available")
 	}
 
-	<-acceptDone
+	select {
+	case <-acceptDone:
+	case <-time.After(5 * time.Second):
+		t.Fatal("timed out waiting for socket accept")
+	}
 }
 
 func TestBuildConnectionConfigForSocketDefaults(t *testing.T) {
@@ -301,6 +306,13 @@ func listenPostgresSocket(t *testing.T, dir string, port int) <-chan struct{} {
 	listener, err := net.Listen("unix", socketPath)
 	if err != nil {
 		t.Fatalf("listen on unix socket: %v", err)
+	}
+	// Bound Accept so a missed dial cannot hang the test forever.
+	if unixListener, ok := listener.(*net.UnixListener); ok {
+		if err := unixListener.SetDeadline(time.Now().Add(5 * time.Second)); err != nil {
+			_ = listener.Close()
+			t.Fatalf("set unix listener deadline: %v", err)
+		}
 	}
 	t.Cleanup(func() {
 		_ = listener.Close()
