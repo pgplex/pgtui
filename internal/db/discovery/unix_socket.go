@@ -218,7 +218,7 @@ func validPort(value string) (int, bool) {
 }
 
 func uniquePorts(ports []int) []int {
-	unique := ports[:0]
+	unique := make([]int, 0, len(ports))
 	seen := make(map[int]struct{}, len(ports))
 
 	for _, port := range ports {

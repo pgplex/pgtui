@@ -2,7 +2,6 @@ package discovery
 
 import (
 	"os"
-	"strconv"
 
 	"github.com/pgplex/pgtui/internal/models"
 )
@@ -17,10 +16,8 @@ func ParseEnvironment() *models.DiscoveredInstance {
 	}
 
 	port := 5432
-	if portStr != "" {
-		if p, err := strconv.Atoi(portStr); err == nil && p > 0 && p <= 65535 {
-			port = p
-		}
+	if p, ok := validPort(portStr); ok {
+		port = p
 	}
 
 	return &models.DiscoveredInstance{
@@ -56,10 +53,8 @@ func GetEnvironmentConfig() *models.ConnectionConfig {
 	}
 
 	port := 5432
-	if portStr != "" {
-		if p, err := strconv.Atoi(portStr); err == nil && p > 0 && p <= 65535 {
-			port = p
-		}
+	if p, ok := validPort(portStr); ok {
+		port = p
 	}
 
 	if sslMode == "" {

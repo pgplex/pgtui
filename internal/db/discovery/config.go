@@ -58,13 +58,11 @@ func buildPgPassConfig(host string, port int) *models.ConnectionConfig {
 }
 
 func buildDefaultConfig(instance models.DiscoveredInstance) models.ConnectionConfig {
-	user := defaultUser()
-
 	return models.ConnectionConfig{
 		Host:     instance.Host,
 		Port:     instance.Port,
 		Database: "postgres",
-		User:     user,
+		User:     defaultUser(),
 		SSLMode:  "prefer",
 	}
 }
