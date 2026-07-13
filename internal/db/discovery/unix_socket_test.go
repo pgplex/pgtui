@@ -172,6 +172,21 @@ func TestInstanceKeyNormalizesSocketSymlinks(t *testing.T) {
 	}
 }
 
+func TestDeduplicateInstancesPrefersCredentialSources(t *testing.T) {
+	instances := deduplicateInstances([]models.DiscoveredInstance{
+		{Host: "localhost", Port: 5432, Source: models.SourcePortScan},
+		{Host: "localhost", Port: 5432, Source: models.SourcePgPass},
+		{Host: "localhost", Port: 5432, Source: models.SourceEnvironment},
+	})
+
+	if len(instances) != 1 {
+		t.Fatalf("expected 1 deduplicated instance, got %d", len(instances))
+	}
+	if instances[0].Source != models.SourceEnvironment {
+		t.Fatalf("expected environment source to win, got %v", instances[0].Source)
+	}
+}
+
 func TestScanBroadUnixSocketDirChecksKnownPortsOnly(t *testing.T) {
 	if runtime.GOOS == "windows" {
 		t.Skip("unix sockets are not supported on windows")

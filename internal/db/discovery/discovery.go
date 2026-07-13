@@ -65,7 +65,7 @@ func deduplicateInstances(instances []models.DiscoveredInstance) []models.Discov
 		key := instanceKey(instance)
 
 		// Keep the one with higher priority source
-		if existing, exists := seen[key]; !exists || instance.Source < existing.Source {
+		if existing, exists := seen[key]; !exists || discoverySourcePriority(instance.Source) < discoverySourcePriority(existing.Source) {
 			seen[key] = instance
 		}
 	}
@@ -85,4 +85,23 @@ func instanceKey(instance models.DiscoveredInstance) string {
 	}
 
 	return host + ":" + strconv.Itoa(instance.Port)
+}
+
+func discoverySourcePriority(source models.DiscoverySource) int {
+	switch source {
+	case models.SourceEnvironment:
+		return 0
+	case models.SourcePgPass:
+		return 1
+	case models.SourcePgService:
+		return 2
+	case models.SourceConfig:
+		return 3
+	case models.SourceUnixSocket:
+		return 4
+	case models.SourcePortScan:
+		return 5
+	default:
+		return 100
+	}
 }
