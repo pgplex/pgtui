@@ -8,6 +8,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	zone "github.com/lrstanley/bubblezone"
+	"github.com/pgplex/pgtui/internal/models"
 	"github.com/pgplex/pgtui/internal/ui/theme"
 )
 
@@ -36,6 +37,7 @@ type PasswordDialog struct {
 	input    textinput.Model
 	host     string
 	port     int
+	endpoint string
 	database string
 	user     string
 }
@@ -65,6 +67,7 @@ func NewPasswordDialog(th theme.Theme) *PasswordDialog {
 func (p *PasswordDialog) SetConnectionInfo(host string, port int, database, user string) {
 	p.host = host
 	p.port = port
+	p.endpoint = (models.ConnectionConfig{Host: host, Port: port}).Endpoint()
 	p.database = database
 	p.user = user
 	p.Title = "Password Required"
@@ -143,7 +146,7 @@ func (p *PasswordDialog) View() string {
 
 	// Connection info (two lines)
 	userLine := labelStyle.Render("User: ") + valueStyle.Render(p.user)
-	hostLine := labelStyle.Render("Host: ") + valueStyle.Render(fmt.Sprintf("%s:%d/%s", p.host, p.port, p.database))
+	hostLine := labelStyle.Render("Host: ") + valueStyle.Render(fmt.Sprintf("%s/%s", p.endpoint, p.database))
 	lines = append(lines, lineStyle.Render(userLine))
 	lines = append(lines, lineStyle.Render(hostLine))
 	lines = append(lines, "")

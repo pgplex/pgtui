@@ -103,6 +103,37 @@ func TestGetEnvironmentConfigUsesUsernameFallback(t *testing.T) {
 	}
 }
 
+func TestBuildConnectionConfigForEnvironmentUsesEnvironmentConfig(t *testing.T) {
+	t.Setenv("PGHOST", " localhost ")
+	t.Setenv("PGPORT", "5432")
+	t.Setenv("PGDATABASE", "envdb")
+	t.Setenv("PGUSER", "envuser")
+	t.Setenv("PGPASSWORD", "secret")
+	t.Setenv("PGSSLMODE", "require")
+
+	config := BuildConnectionConfig(models.DiscoveredInstance{
+		Host:   "localhost",
+		Port:   5432,
+		Source: models.SourceEnvironment,
+	})
+
+	if config.Host != " localhost " {
+		t.Fatalf("expected raw environment host, got %q", config.Host)
+	}
+	if config.Database != "envdb" {
+		t.Fatalf("expected environment database, got %q", config.Database)
+	}
+	if config.User != "envuser" {
+		t.Fatalf("expected environment user, got %q", config.User)
+	}
+	if config.Password != "secret" {
+		t.Fatal("expected environment password")
+	}
+	if config.SSLMode != "require" {
+		t.Fatalf("expected environment sslmode, got %q", config.SSLMode)
+	}
+}
+
 func TestCandidateUnixSocketDirsSplitsPGHost(t *testing.T) {
 	t.Setenv("PGHOST", "/custom/socket,localhost, /tmp ")
 
@@ -184,6 +215,19 @@ func TestDeduplicateInstancesPrefersCredentialSources(t *testing.T) {
 	}
 	if instances[0].Source != models.SourceEnvironment {
 		t.Fatalf("expected environment source to win, got %v", instances[0].Source)
+	}
+}
+
+func TestDiscoverAllSortsByDiscoveryPriority(t *testing.T) {
+	instances := []models.DiscoveredInstance{
+		{Host: "localhost", Port: 5432, Source: models.SourcePortScan},
+		{Host: "localhost", Port: 5433, Source: models.SourceEnvironment},
+	}
+
+	sortDiscoveredInstances(instances)
+
+	if instances[0].Source != models.SourceEnvironment {
+		t.Fatalf("expected environment source first, got %v", instances[0].Source)
 	}
 }
 

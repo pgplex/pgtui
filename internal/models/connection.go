@@ -2,7 +2,9 @@ package models
 
 import (
 	"fmt"
+	"net"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -25,7 +27,17 @@ func (c ConnectionConfig) UsesUnixSocket() bool {
 
 // DisplayTarget returns a user-friendly connection target.
 func (c ConnectionConfig) DisplayTarget() string {
-	return formatConnectionTarget(c.Host, c.Port)
+	return c.Endpoint()
+}
+
+// Endpoint returns the connection endpoint formatted for labels and identifiers.
+func (c ConnectionConfig) Endpoint() string {
+	return formatConnectionEndpoint(c.Host, c.Port)
+}
+
+// ConnectionLabel returns a concise user/database connection label.
+func (c ConnectionConfig) ConnectionLabel() string {
+	return fmt.Sprintf("%s@%s/%s", c.User, c.Endpoint(), c.Database)
 }
 
 // Connection represents an active database connection
@@ -64,7 +76,7 @@ func (d DiscoveredInstance) UsesUnixSocket() bool {
 
 // DisplayTarget returns a user-friendly discovery target.
 func (d DiscoveredInstance) DisplayTarget() string {
-	return formatConnectionTarget(d.Host, d.Port)
+	return formatConnectionEndpoint(d.Host, d.Port)
 }
 
 // DiscoverySource indicates how an instance was discovered
@@ -130,10 +142,10 @@ func isUnixSocketHost(host string) bool {
 	return strings.HasPrefix(host, "/")
 }
 
-func formatConnectionTarget(host string, port int) string {
+func formatConnectionEndpoint(host string, port int) string {
 	if isUnixSocketHost(host) {
 		return filepath.Join(host, fmt.Sprintf(".s.PGSQL.%d", port))
 	}
 
-	return fmt.Sprintf("%s:%d", host, port)
+	return net.JoinHostPort(host, strconv.Itoa(port))
 }

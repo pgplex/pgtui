@@ -1484,8 +1484,8 @@ func (a *App) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if msg.Err != nil {
 			// Connection failed - clear pending password (don't save wrong password)
 			a.pendingPasswordSave = nil
-			a.ShowError("Connection Failed", fmt.Sprintf("Could not connect to %s:%d\n\nError: %v",
-				msg.Config.Host, msg.Config.Port, msg.Err))
+			a.ShowError("Connection Failed", fmt.Sprintf("Could not connect to %s\n\nError: %v",
+				msg.Config.DisplayTarget(), msg.Err))
 			return a, nil
 		}
 
@@ -2099,11 +2099,7 @@ func (a *App) renderNormalView() string {
 	if a.state.ActiveConnection != nil {
 		// Build connection string with elegant formatting
 		conn := a.state.ActiveConnection
-		connStr := fmt.Sprintf("%s@%s:%d/%s",
-			conn.Config.User,
-			conn.Config.Host,
-			conn.Config.Port,
-			conn.Config.Database)
+		connStr := conn.Config.ConnectionLabel()
 
 		connStatus = "  " + styles.connGreen.Render("") + " " + styles.connText.Render(connStr)
 	} else {
@@ -3608,12 +3604,7 @@ func (a *App) renderConnectingOverlay() string {
 	hostStyle := lipgloss.NewStyle().Foreground(a.theme.Foreground)
 	hintStyle := lipgloss.NewStyle().Foreground(a.theme.Metadata)
 
-	hostInfo := fmt.Sprintf("%s@%s:%d/%s",
-		a.connectingConfig.User,
-		a.connectingConfig.Host,
-		a.connectingConfig.Port,
-		a.connectingConfig.Database,
-	)
+	hostInfo := a.connectingConfig.ConnectionLabel()
 
 	// Build each line separately
 	line1 := a.executeSpinner.View() + " " + loadingStyle.Render("Connecting...") + " " + elapsedStyle.Render(elapsedStr)

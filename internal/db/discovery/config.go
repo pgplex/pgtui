@@ -11,7 +11,7 @@ import (
 func BuildConnectionConfig(instance models.DiscoveredInstance) models.ConnectionConfig {
 	switch instance.Source {
 	case models.SourceEnvironment:
-		if envConfig := GetEnvironmentConfig(); envConfig != nil && envConfig.Host == instance.Host && envConfig.Port == instance.Port {
+		if envConfig := GetEnvironmentConfig(); envConfig != nil {
 			return *envConfig
 		}
 	case models.SourcePgPass:

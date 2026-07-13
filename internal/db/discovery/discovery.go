@@ -42,9 +42,15 @@ func (d *Discoverer) DiscoverAll(ctx context.Context) []models.DiscoveredInstanc
 	instances = deduplicateInstances(instances)
 
 	// Sort by source priority
+	sortDiscoveredInstances(instances)
+
+	return instances
+}
+
+func sortDiscoveredInstances(instances []models.DiscoveredInstance) {
 	sort.Slice(instances, func(i, j int) bool {
 		if instances[i].Source != instances[j].Source {
-			return instances[i].Source < instances[j].Source
+			return discoverySourcePriority(instances[i].Source) < discoverySourcePriority(instances[j].Source)
 		}
 
 		if instances[i].Host != instances[j].Host {
@@ -53,8 +59,6 @@ func (d *Discoverer) DiscoverAll(ctx context.Context) []models.DiscoveredInstanc
 
 		return instances[i].Port < instances[j].Port
 	})
-
-	return instances
 }
 
 // deduplicateInstances removes duplicate connection targets.
