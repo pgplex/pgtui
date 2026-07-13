@@ -3,7 +3,6 @@ package discovery
 import (
 	"context"
 	"sort"
-	"strconv"
 
 	"github.com/pgplex/pgtui/internal/models"
 )
@@ -30,16 +29,13 @@ func (d *Discoverer) DiscoverAll(ctx context.Context) []models.DiscoveredInstanc
 	}
 
 	// 2. Scan common Unix socket directories
-	unixSocketInstances := d.scanner.ScanUnixSockets(ctx)
-	instances = append(instances, unixSocketInstances...)
+	instances = append(instances, d.scanner.ScanUnixSockets(ctx)...)
 
 	// 3. Scan localhost ports
-	localInstances := d.scanner.ScanLocalhost(ctx)
-	instances = append(instances, localInstances...)
+	instances = append(instances, d.scanner.ScanLocalhost(ctx)...)
 
 	// 4. Parse .pgpass
-	pgpassInstances := GetDiscoveredInstances()
-	instances = append(instances, pgpassInstances...)
+	instances = append(instances, GetDiscoveredInstances()...)
 
 	// Deduplicate
 	instances = deduplicateInstances(instances)
@@ -65,7 +61,7 @@ func deduplicateInstances(instances []models.DiscoveredInstance) []models.Discov
 	seen := make(map[string]models.DiscoveredInstance)
 
 	for _, instance := range instances {
-		key := instance.Host + ":" + strconv.Itoa(instance.Port)
+		key := instance.DisplayTarget()
 
 		// Keep the one with higher priority source
 		if existing, exists := seen[key]; !exists || instance.Source < existing.Source {

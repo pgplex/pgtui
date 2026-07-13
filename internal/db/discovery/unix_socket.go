@@ -98,9 +98,10 @@ func (s *Scanner) scanUnixSocketDir(ctx context.Context, dir string) []models.Di
 }
 
 func (s *Scanner) scanKnownUnixSocketPorts(ctx context.Context, dir string) []models.DiscoveredInstance {
-	instances := make([]models.DiscoveredInstance, 0, len(DefaultPorts))
+	ports := candidateUnixSocketPorts()
+	instances := make([]models.DiscoveredInstance, 0, len(ports))
 
-	for _, port := range candidateUnixSocketPorts() {
+	for _, port := range ports {
 		if ctx.Err() != nil {
 			break
 		}
@@ -137,9 +138,10 @@ func (s *Scanner) scanUnixSocket(ctx context.Context, dir string, port int) mode
 }
 
 func candidateUnixSocketDirs() []string {
-	dirs := make([]string, 0, len(defaultUnixSocketDirs)+len(strings.Split(os.Getenv("PGHOST"), ",")))
+	pgHosts := strings.Split(os.Getenv("PGHOST"), ",")
+	dirs := make([]string, 0, len(defaultUnixSocketDirs)+len(pgHosts))
 
-	for _, host := range strings.Split(os.Getenv("PGHOST"), ",") {
+	for _, host := range pgHosts {
 		host = strings.TrimSpace(host)
 		if strings.HasPrefix(host, "/") {
 			dirs = append(dirs, host)
@@ -190,25 +192,11 @@ func isBroadUnixSocketDir(dir string) bool {
 func candidateUnixSocketPorts() []int {
 	ports := append([]int(nil), DefaultPorts...)
 
-	if portStr := strings.TrimSpace(os.Getenv("PGPORT")); portStr != "" {
-		port, err := strconv.Atoi(portStr)
-		if err == nil && port >= 1 && port <= 65535 {
-			ports = append([]int{port}, ports...)
-		}
+	if port, ok := validPort(os.Getenv("PGPORT")); ok {
+		ports = append([]int{port}, ports...)
 	}
 
-	unique := ports[:0]
-	seen := make(map[int]struct{}, len(ports))
-	for _, port := range ports {
-		if _, exists := seen[port]; exists {
-			continue
-		}
-
-		seen[port] = struct{}{}
-		unique = append(unique, port)
-	}
-
-	return unique
+	return uniquePorts(ports)
 }
 
 func postgresSocketPort(name string) (int, bool) {
@@ -221,10 +209,26 @@ func postgresSocketPort(name string) (int, bool) {
 		return 0, false
 	}
 
-	port, err := strconv.Atoi(portStr)
-	if err != nil || port < 1 || port > 65535 {
-		return 0, false
+	return validPort(portStr)
+}
+
+func validPort(value string) (int, bool) {
+	port, err := strconv.Atoi(strings.TrimSpace(value))
+	return port, err == nil && port >= 1 && port <= 65535
+}
+
+func uniquePorts(ports []int) []int {
+	unique := ports[:0]
+	seen := make(map[int]struct{}, len(ports))
+
+	for _, port := range ports {
+		if _, exists := seen[port]; exists {
+			continue
+		}
+
+		seen[port] = struct{}{}
+		unique = append(unique, port)
 	}
 
-	return port, true
+	return unique
 }

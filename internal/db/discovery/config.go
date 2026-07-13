@@ -41,7 +41,7 @@ func buildPgPassConfig(host string, port int) *models.ConnectionConfig {
 
 		database := entry.Database
 		if database == "" || database == "*" {
-			database = defaultDatabase(user)
+			database = user
 		}
 
 		return &models.ConnectionConfig{
@@ -74,14 +74,6 @@ func defaultUser() string {
 		if value := strings.TrimSpace(os.Getenv(key)); value != "" {
 			return value
 		}
-	}
-
-	return "postgres"
-}
-
-func defaultDatabase(user string) string {
-	if user != "" {
-		return user
 	}
 
 	return "postgres"

@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"strconv"
 	"testing"
 
 	"github.com/rebelice/lazypg/internal/models"
@@ -17,24 +18,7 @@ func TestScanUnixSocketDirs(t *testing.T) {
 	}
 
 	tempDir := t.TempDir()
-	socketPath := filepath.Join(tempDir, ".s.PGSQL.6543")
-
-	listener, err := net.Listen("unix", socketPath)
-	if err != nil {
-		t.Fatalf("listen on unix socket: %v", err)
-	}
-	defer func() {
-		_ = listener.Close()
-	}()
-
-	acceptDone := make(chan struct{})
-	go func() {
-		defer close(acceptDone)
-		conn, err := listener.Accept()
-		if err == nil {
-			_ = conn.Close()
-		}
-	}()
+	acceptDone := listenPostgresSocket(t, tempDir, 6543)
 
 	scanner := NewScanner()
 	instances := scanner.ScanUnixSocketDirs(context.Background(), []string{tempDir})
@@ -183,14 +167,7 @@ func TestScanBroadUnixSocketDirChecksKnownPortsOnly(t *testing.T) {
 		broadUnixSocketDirs = oldBroadDirs
 	})
 
-	socketPath := filepath.Join(tempDir, ".s.PGSQL.6543")
-	listener, err := net.Listen("unix", socketPath)
-	if err != nil {
-		t.Fatalf("listen on unix socket: %v", err)
-	}
-	defer func() {
-		_ = listener.Close()
-	}()
+	listenPostgresSocket(t, tempDir, 6543)
 
 	scanner := NewScanner()
 	instances := scanner.scanUnixSocketDir(context.Background(), tempDir)
@@ -206,4 +183,28 @@ func TestCandidateUnixSocketPortsIncludesPGPort(t *testing.T) {
 	if len(ports) == 0 || ports[0] != 6543 {
 		t.Fatalf("expected PGPORT first, got %#v", ports)
 	}
+}
+
+func listenPostgresSocket(t *testing.T, dir string, port int) <-chan struct{} {
+	t.Helper()
+
+	socketPath := filepath.Join(dir, ".s.PGSQL."+strconv.Itoa(port))
+	listener, err := net.Listen("unix", socketPath)
+	if err != nil {
+		t.Fatalf("listen on unix socket: %v", err)
+	}
+	t.Cleanup(func() {
+		_ = listener.Close()
+	})
+
+	acceptDone := make(chan struct{})
+	go func() {
+		defer close(acceptDone)
+		conn, err := listener.Accept()
+		if err == nil {
+			_ = conn.Close()
+		}
+	}()
+
+	return acceptDone
 }

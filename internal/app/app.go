@@ -3315,48 +3315,21 @@ func (a *App) handleConnectionDialog(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 				return a, nil
 			}
 			return a.performConnection(config)
-		} else {
-			var config models.ConnectionConfig
-
-			// Check if browsing history or discovered instances
-			if a.connectionDialog.InHistorySection {
-				// Get selected history entry
-				historyEntry := a.connectionDialog.GetSelectedHistory()
-				if historyEntry == nil {
-					// No history entry selected
-					return a, nil
-				}
-
-				// Convert history entry to connection config WITH password from keyring
-				if a.connectionHistory != nil {
-					result := a.connectionHistory.GetConnectionConfigWithPassword(historyEntry)
-					config = result.Config
-
-					// If password is missing, show password dialog
-					if result.PasswordMissing {
-						entryCopy := *historyEntry
-						a.pendingConnectionInfo = &entryCopy
-						a.passwordDialog.SetConnectionInfo(historyEntry.Host, historyEntry.Port, historyEntry.Database, historyEntry.User)
-						a.showPasswordDialog = true
-						a.showConnectionDialog = false
-						return a, a.passwordDialog.Init()
-					}
-				} else {
-					config = historyEntry.ToConnectionConfig()
-				}
-			} else {
-				// Get selected discovered instance
-				instance := a.connectionDialog.GetSelectedInstance()
-				if instance == nil {
-					// No instance selected
-					return a, nil
-				}
-
-				config = discovery.BuildConnectionConfig(*instance)
-			}
-
-			return a.performConnection(config)
 		}
+
+		if a.connectionDialog.InHistorySection {
+			historyEntry := a.connectionDialog.GetSelectedHistory()
+			if historyEntry == nil {
+				return a, nil
+			}
+			return a.connectToHistoryEntry(*historyEntry)
+		}
+
+		instance := a.connectionDialog.GetSelectedInstance()
+		if instance == nil {
+			return a, nil
+		}
+		return a.connectToDiscoveredInstance(*instance)
 
 	default:
 		// In manual mode, delegate to textinput for cursor and text handling
