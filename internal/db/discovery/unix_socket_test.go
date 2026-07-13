@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/rebelice/lazypg/internal/models"
+	"github.com/pgplex/pgtui/internal/models"
 )
 
 func TestScanUnixSocketDirs(t *testing.T) {

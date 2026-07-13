@@ -4,7 +4,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/rebelice/lazypg/internal/models"
+	"github.com/pgplex/pgtui/internal/models"
 )
 
 // BuildConnectionConfig turns a discovered instance into a connection config.
