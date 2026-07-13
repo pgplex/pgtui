@@ -105,11 +105,11 @@ func TestGetEnvironmentConfigUsesUsernameFallback(t *testing.T) {
 
 func TestBuildConnectionConfigForEnvironmentUsesEnvironmentConfig(t *testing.T) {
 	t.Setenv("PGHOST", " localhost ")
-	t.Setenv("PGPORT", "5432")
-	t.Setenv("PGDATABASE", "envdb")
-	t.Setenv("PGUSER", "envuser")
+	t.Setenv("PGPORT", " 5432 ")
+	t.Setenv("PGDATABASE", " envdb ")
+	t.Setenv("PGUSER", " envuser ")
 	t.Setenv("PGPASSWORD", "secret")
-	t.Setenv("PGSSLMODE", "require")
+	t.Setenv("PGSSLMODE", " require ")
 
 	config := BuildConnectionConfig(models.DiscoveredInstance{
 		Host:   "localhost",
@@ -117,14 +117,17 @@ func TestBuildConnectionConfigForEnvironmentUsesEnvironmentConfig(t *testing.T) 
 		Source: models.SourceEnvironment,
 	})
 
-	if config.Host != " localhost " {
-		t.Fatalf("expected raw environment host, got %q", config.Host)
+	if config.Host != "localhost" {
+		t.Fatalf("expected trimmed environment host, got %q", config.Host)
+	}
+	if config.Port != 5432 {
+		t.Fatalf("expected environment port 5432, got %d", config.Port)
 	}
 	if config.Database != "envdb" {
-		t.Fatalf("expected environment database, got %q", config.Database)
+		t.Fatalf("expected trimmed environment database, got %q", config.Database)
 	}
 	if config.User != "envuser" {
-		t.Fatalf("expected environment user, got %q", config.User)
+		t.Fatalf("expected trimmed environment user, got %q", config.User)
 	}
 	// Password is intentionally left empty: libpq reads PGPASSWORD from the
 	// environment, and keeping it out of the config prevents persisting it to
@@ -136,7 +139,23 @@ func TestBuildConnectionConfigForEnvironmentUsesEnvironmentConfig(t *testing.T) 
 		t.Fatalf("expected empty name to avoid leaking into connection ID/history, got %q", config.Name)
 	}
 	if config.SSLMode != "require" {
-		t.Fatalf("expected environment sslmode, got %q", config.SSLMode)
+		t.Fatalf("expected trimmed environment sslmode, got %q", config.SSLMode)
+	}
+}
+
+func TestParseEnvironmentTrimsHost(t *testing.T) {
+	t.Setenv("PGHOST", " /var/run/postgresql ")
+	t.Setenv("PGPORT", " 5433 ")
+
+	instance := ParseEnvironment()
+	if instance == nil {
+		t.Fatal("expected environment instance")
+	}
+	if instance.Host != "/var/run/postgresql" {
+		t.Fatalf("expected trimmed host, got %q", instance.Host)
+	}
+	if instance.Port != 5433 {
+		t.Fatalf("expected port 5433, got %d", instance.Port)
 	}
 }
 

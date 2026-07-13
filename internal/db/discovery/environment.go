@@ -2,14 +2,15 @@ package discovery
 
 import (
 	"os"
+	"strings"
 
 	"github.com/pgplex/pgtui/internal/models"
 )
 
 // ParseEnvironment reads PostgreSQL environment variables
 func ParseEnvironment() *models.DiscoveredInstance {
-	host := os.Getenv("PGHOST")
-	portStr := os.Getenv("PGPORT")
+	host := envString("PGHOST")
+	portStr := envString("PGPORT")
 
 	if host == "" {
 		return nil
@@ -30,12 +31,13 @@ func ParseEnvironment() *models.DiscoveredInstance {
 
 // GetEnvironmentConfig gets connection config from environment
 func GetEnvironmentConfig() *models.ConnectionConfig {
-	host := os.Getenv("PGHOST")
-	portStr := os.Getenv("PGPORT")
-	database := os.Getenv("PGDATABASE")
-	user := os.Getenv("PGUSER")
+	host := envString("PGHOST")
+	portStr := envString("PGPORT")
+	database := envString("PGDATABASE")
+	user := envString("PGUSER")
+	// Password is not trimmed: leading/trailing spaces can be intentional.
 	password := os.Getenv("PGPASSWORD")
-	sslMode := os.Getenv("PGSSLMODE")
+	sslMode := envString("PGSSLMODE")
 
 	if host == "" && database == "" && user == "" {
 		return nil
@@ -70,4 +72,8 @@ func GetEnvironmentConfig() *models.ConnectionConfig {
 		Password: password,
 		SSLMode:  sslMode,
 	}
+}
+
+func envString(key string) string {
+	return strings.TrimSpace(os.Getenv(key))
 }
